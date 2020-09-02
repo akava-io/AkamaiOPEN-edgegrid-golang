@@ -1,3 +1,6 @@
+github.com/akava-io/go-cache v1.0.0 h1:tRBLb3S5ZmNJZKvcwjWMbJUKc7mo4VxJPK3CBw1mrjQ=
+github.com/akava-io/go-cache v2.1.0+incompatible h1:DyY6JK2JxYc8Hr9ANo3aimxTpxSReyDJpyAD+9B1gUE=
+github.com/akava-io/go-cache v2.1.0+incompatible/go.mod h1:L7/ug3vteIObYyiRiQlUOLH/pfy4EterL7eHqaFgT0I=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

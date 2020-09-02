@@ -3,6 +3,7 @@ module github.com/akamai/AkamaiOPEN-edgegrid-golang
 go 1.12
 
 require (
+	github.com/akava-io/go-cache v2.1.0+incompatible
 	github.com/google/go-querystring v1.0.0
 	github.com/google/uuid v1.1.1
 	github.com/mitchellh/go-homedir v1.1.0
