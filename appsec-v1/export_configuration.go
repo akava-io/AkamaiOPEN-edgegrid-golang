@@ -20,21 +20,55 @@ type ExportConfigurationResponse struct {
 	ConfigID   int    `json:"configId"`
 	ConfigName string `json:"configName"`
 	Version    int    `json:"version"`
+	BasedOn    int    `json:"basedOn"`
 	Staging    struct {
-		Action string    `json:"action"`
-		Status string    `json:"status"`
-		Time   time.Time `json:"time"`
+		Status string `json:"status"`
 	} `json:"staging"`
 	Production struct {
-		Action string    `json:"action"`
-		Status string    `json:"status"`
-		Time   time.Time `json:"time"`
+		Status string `json:"status"`
 	} `json:"production"`
-	CreateDate         time.Time     `json:"createDate"`
-	CreatedBy          string        `json:"createdBy"`
-	SelectedHosts      []interface{} `json:"selectedHosts"`
-	SelectableHosts    []string      `json:"selectableHosts"`
-	RatePolicies       []interface{} `json:"ratePolicies"`
+	CreateDate      time.Time `json:"createDate"`
+	CreatedBy       string    `json:"createdBy"`
+	SelectedHosts   []string  `json:"selectedHosts"`
+	SelectableHosts []string  `json:"selectableHosts"`
+	RatePolicies    []struct {
+		AdditionalMatchOptions []struct {
+			PositiveMatch bool     `json:"positiveMatch"`
+			Type          string   `json:"type"`
+			Values        []string `json:"values"`
+		} `json:"additionalMatchOptions"`
+		AllTraffic       bool      `json:"allTraffic"`
+		AverageThreshold int       `json:"averageThreshold"`
+		BurstThreshold   int       `json:"burstThreshold"`
+		ClientIdentifier string    `json:"clientIdentifier"`
+		CreateDate       time.Time `json:"createDate"`
+		Description      string    `json:"description"`
+		FileExtensions   struct {
+			PositiveMatch bool     `json:"positiveMatch"`
+			Values        []string `json:"values"`
+		} `json:"fileExtensions"`
+		ID        int    `json:"id"`
+		MatchType string `json:"matchType"`
+		Name      string `json:"name"`
+		Path      struct {
+			PositiveMatch bool     `json:"positiveMatch"`
+			Values        []string `json:"values"`
+		} `json:"path"`
+		PathMatchType        string `json:"pathMatchType"`
+		PathURIPositiveMatch bool   `json:"pathUriPositiveMatch"`
+		QueryParameters      []struct {
+			Name          string   `json:"name"`
+			PositiveMatch bool     `json:"positiveMatch"`
+			ValueInRange  bool     `json:"valueInRange"`
+			Values        []string `json:"values"`
+		} `json:"queryParameters"`
+		RequestType           string    `json:"requestType"`
+		SameActionOnIpv6      bool      `json:"sameActionOnIpv6"`
+		Type                  string    `json:"type"`
+		UpdateDate            time.Time `json:"updateDate"`
+		UseXForwardForHeaders bool      `json:"useXForwardForHeaders"`
+		Used                  bool      `json:"used"`
+	} `json:"ratePolicies"`
 	ReputationProfiles []struct {
 		Context         string `json:"context"`
 		ContextReadable string `json:"contextReadable"`
@@ -43,28 +77,37 @@ type ExportConfigurationResponse struct {
 		Name            string `json:"name"`
 		Threshold       int    `json:"threshold"`
 	} `json:"reputationProfiles"`
-	CustomRules []interface{} `json:"customRules"`
-	Rulesets    []struct {
+	CustomRules []struct {
+		Conditions []struct {
+			Type          string   `json:"type"`
+			PositiveMatch bool     `json:"positiveMatch"`
+			Value         []string `json:"value"`
+			ValueCase     bool     `json:"valueCase,omitempty"`
+			ValueWildcard bool     `json:"valueWildcard,omitempty"`
+		} `json:"conditions"`
+		Description   string   `json:"description"`
+		ID            int      `json:"id"`
+		Name          string   `json:"name"`
+		RuleActivated bool     `json:"ruleActivated"`
+		Structured    bool     `json:"structured"`
+		Tag           []string `json:"tag"`
+		Version       int      `json:"version"`
+	} `json:"customRules"`
+	Rulesets []struct {
 		ID               int       `json:"id"`
 		RulesetVersionID int       `json:"rulesetVersionId"`
 		Type             string    `json:"type"`
 		ReleaseDate      time.Time `json:"releaseDate"`
 		Rules            []struct {
-			ID                  int      `json:"id"`
-			InspectRequestBody  bool     `json:"inspectRequestBody"`
-			InspectResponseBody bool     `json:"inspectResponseBody"`
-			Outdated            bool     `json:"outdated"`
-			RuleVersion         int      `json:"ruleVersion"`
-			Score               int      `json:"score"`
-			Tag                 string   `json:"tag,omitempty"`
-			Title               string   `json:"title"`
-			AttackGroups        []string `json:"attackGroups,omitempty"`
+			ID                  int    `json:"id"`
+			InspectRequestBody  bool   `json:"inspectRequestBody"`
+			InspectResponseBody bool   `json:"inspectResponseBody"`
+			Outdated            bool   `json:"outdated"`
+			RuleVersion         int    `json:"ruleVersion"`
+			Score               int    `json:"score"`
+			Tag                 string `json:"tag"`
+			Title               string `json:"title"`
 		} `json:"rules"`
-		AttackGroups []struct {
-			Group     string `json:"group"`
-			GroupName string `json:"groupName"`
-			Threshold int    `json:"threshold"`
-		} `json:"attackGroups"`
 	} `json:"rulesets"`
 	MatchTargets struct {
 		WebsiteTargets []struct {
@@ -78,7 +121,6 @@ type ExportConfigurationResponse struct {
 				ApplySlowPostControls         bool `json:"applySlowPostControls"`
 			} `json:"effectiveSecurityControls"`
 			FilePaths                    []string `json:"filePaths"`
-			Hostnames                    []string `json:"hostNames"`
 			ID                           int      `json:"id"`
 			IsNegativeFileExtensionMatch bool     `json:"isNegativeFileExtensionMatch"`
 			IsNegativePathMatch          bool     `json:"isNegativePathMatch"`
@@ -107,20 +149,20 @@ type ExportConfigurationResponse struct {
 				ID               int    `json:"id"`
 				RulesetVersionID int    `json:"rulesetVersionId"`
 			} `json:"ruleActions"`
-			AttackGroupActions []struct {
-				Action           string `json:"action"`
-				Group            string `json:"group"`
-				RulesetVersionID int    `json:"rulesetVersionId"`
-			} `json:"attackGroupActions"`
 		} `json:"webApplicationFirewall"`
+		APIRequestConstraints struct {
+			Action string `json:"action"`
+		} `json:"apiRequestConstraints"`
 		IPGeoFirewall struct {
-			Block      string `json:"block"`
-			IPControls struct {
-				BlockedIPNetworkLists struct {
-					NetworkList []string `json:"networkList"`
-				} `json:"blockedIPNetworkLists"`
-			} `json:"ipControls"`
+			Block string `json:"block"`
 		} `json:"ipGeoFirewall"`
+		SlowPost struct {
+			Action            string `json:"action"`
+			SlowRateThreshold struct {
+				Period int `json:"period"`
+				Rate   int `json:"rate"`
+			} `json:"slowRateThreshold"`
+		} `json:"slowPost"`
 	} `json:"securityPolicies"`
 	AdvancedOptions struct {
 		Logging struct {
@@ -136,9 +178,10 @@ type ExportConfigurationResponse struct {
 			} `json:"standardHeaders"`
 		} `json:"logging"`
 		Prefetch struct {
-			AllExtensions      bool `json:"allExtensions"`
-			EnableAppLayer     bool `json:"enableAppLayer"`
-			EnableRateControls bool `json:"enableRateControls"`
+			AllExtensions      bool     `json:"allExtensions"`
+			EnableAppLayer     bool     `json:"enableAppLayer"`
+			EnableRateControls bool     `json:"enableRateControls"`
+			Extensions         []string `json:"extensions"`
 		} `json:"prefetch"`
 	} `json:"advancedOptions"`
 }
