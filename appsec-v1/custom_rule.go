@@ -123,7 +123,7 @@ func (customrule *CustomRuleResponse) UpdateCustomRule(configid int, ruleid int,
 // API Docs: // appsec v1
 //
 // https://developer.akamai.com/api/cloud_security/application_security/v1.html#postcustomrule
-func (customrule *CustomRuleResponse) SaveCustomRule(configid int, correlationid string) (*CustomRuleResponse, error) {
+func (customrule *CustomRuleResponse) SaveCustomRule(configid int, correlationid string) error {
 	req, err := client.NewJSONRequest(
 		Config,
 		"POST",
@@ -134,27 +134,27 @@ func (customrule *CustomRuleResponse) SaveCustomRule(configid int, correlationid
 		customrule,
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	edge.PrintHttpRequestCorrelation(req, true, correlationid)
 
 	res, err := client.Do(Config, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	edge.PrintHttpResponseCorrelation(res, true, correlationid)
 
 	if client.IsError(res) {
-		return nil, client.NewAPIError(res)
+		return client.NewAPIError(res)
 	}
 
 	if err = client.BodyJSON(res, customrule); err != nil {
-		return nil, err
+		return err
 	}
 
-	return customrule, nil
+	return nil
 }
 
 // Delete will delete a CustomRule
