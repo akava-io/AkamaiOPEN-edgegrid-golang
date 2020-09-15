@@ -4,13 +4,23 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/akamai/AkamaiOPEN-edgegrid-golang/edgegrid"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/h2non/gock.v1"
 )
 
-func TestGetConfigurations(t *testing.T) {
+var (
+	config = edgegrid.Config{
+		Host:         "akaa-baseurl-xxxxxxxxxxx-xxxxxxxxxxxxx.luna.akamaiapis.net/",
+		AccessToken:  "akab-access-token-xxx-xxxxxxxxxxxxxxxx",
+		ClientToken:  "akab-client-token-xxx-xxxxxxxxxxxxxxxx",
+		ClientSecret: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=",
+		MaxBody:      2048,
+		Debug:        false,
+	}
+)
 
-	//dnsTestZone := "testzone.com"
+func TestGetConfigurations(t *testing.T) {
 
 	defer gock.Off()
 
